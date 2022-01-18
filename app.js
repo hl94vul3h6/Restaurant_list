@@ -1,5 +1,10 @@
 const express = require('express')
+const mongoose = require('mongoose')
+
 const app = express()
+mongoose.connect('mongodb://localhost/todo-list', { useNewUrlParser: true, useUnifiedTopology: true })
+
+const db = mongoose.connection
 const port = 3000
 
 const exphbs = require('express-handlebars')
@@ -10,15 +15,23 @@ app.set('view engine', 'handlebars')
 
 app.use(express.static('public'))
 
+db.on('error', () => {
+  console.log('mongodb error')
+})
+
+db.once('open', () => {
+  console.log('mongodb connected')
+})
+
 app.get('/', (req, res) => {
-  res.render('index',{ restaurant: restaurantList.results})
+  res.render('index', { restaurant: restaurantList.results })
 })
 
 app.get('/restaurants/:id', (req, res) => {
   const restaurant = restaurantList.results.find(restaurant => restaurant.id.toString() === req.params.id)
-  
-  
-  res.render('show', {restaurant: restaurant})
+
+
+  res.render('show', { restaurant: restaurant })
 })
 
 app.get('/search', (req, res) => {
@@ -28,7 +41,7 @@ app.get('/search', (req, res) => {
   const filterRestaurant = restaurantList.results.filter(data => {
     return data.name.toLowerCase().includes(keyword) || data.category.includes(keyword)
   })
-  res.render('index', { restaurant: filterRestaurant ,keywords })
+  res.render('index', { restaurant: filterRestaurant, keywords })
 })
 
 app.listen(port, () => {
