@@ -1,22 +1,16 @@
-const mongoose = require('mongoose')
-const Restaurant = require('../restaurant') // 載入 todo model
-const restaurantList = require('../../restaurant.json').results
+const Restaurant = require("../restaurant");
+const restaurantList = require("../../restaurant.json").results;
+const db = require("../../config/mongoose");
 
-mongoose.connect('mongodb://localhost/restaurant-list', { useNewUrlParser: true, useUnifiedTopology: true })
-
-const db = mongoose.connection
-
-db.on('error', () => {
-  console.log('mongodb error!')
-})
-
-db.once('open', () => {
-  console.log('mongodb connected!')
-  console.log('running restaurantSeeder script')
+//* 連線成功
+db.once("open", () => {
+  console.log("mongodb connected!");
 
   Restaurant.create(restaurantList)
-    .then(() => {
-      console.log('done')
+    .then((doc) => {
+      console.log(doc);
     })
-    .catch(error => console.log(error))
-})
+    .catch((error) => {
+      console.error(error);
+    });
+});
