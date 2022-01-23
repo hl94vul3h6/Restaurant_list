@@ -67,6 +67,14 @@ app.post("/restaurants/:restaurantId", (req, res) => {
     .catch(err => console.log(err))
 })
 
+
+app.post("/restaurants/:restaurantId/delete", (req, res) => {
+  const { restaurantId } = req.params
+  Restaurant.findByIdAndDelete(restaurantId)
+    .then(() => res.redirect("/"))
+    .catch(err => console.log(err))
+})
+
 app.get('/search', (req, res) => {
   const keyword = req.query.keyword.trim().toLowerCase()
   const keywords = req.query.keywords
