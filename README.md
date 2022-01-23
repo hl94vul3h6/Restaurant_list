@@ -1,7 +1,7 @@
 # 我的餐廳清單
 
 ### 使用者畫面
-![我的餐廳清單](./public/image/screenshot.png)
+![我的餐廳清單](./public/image/screenshot3.png)
 使用 Node.js + Express 打造的餐廳美食清單網站
 
 ## 基本功能
