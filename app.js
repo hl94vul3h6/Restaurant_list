@@ -50,6 +50,23 @@ app.get("/restaurants/:restaurantId", (req, res) => {
     .catch(err => console.log(err))
 })
 
+
+app.get("/restaurants/:restaurantId/edit", (req, res) => {
+  const { restaurantId } = req.params
+  Restaurant.findById(restaurantId)
+    .lean()
+    .then(restaurantinfos => res.render("edit", { restaurantinfos }))
+    .catch(err => console.log(err))
+})
+
+app.post("/restaurants/:restaurantId", (req, res) => {
+  const { restaurantId } = req.params
+  Restaurant.findByIdAndUpdate(restaurantId, req.body)
+
+    .then(() => res.redirect(`/restaurants/${restaurantId}`))
+    .catch(err => console.log(err))
+})
+
 app.get('/search', (req, res) => {
   const keyword = req.query.keyword.trim().toLowerCase()
   const keywords = req.query.keywords
